@@ -41,11 +41,11 @@ async def handle_message(event):
         await event.respond("Thank you! Trying to generate the session string now...")
 
         # Now we use the collected APP ID and API HASH to authenticate
-        async with TelegramClient(StringSession(), user_data['app_id'], user_data['api_hash']) as client:
+        with TelegramClient(StringSession(), user_data['app_id'], user_data['api_hash']) as client:
             session_str = client.session.save()
-            await event.respond(f"Your session string is: {session_str}")
+            event.respond(f"Your session string is: {session_str}")
             # Optionally send it to the user directly in Telegram
-            await client.send_message('me', f"Here is your session string: {session_str}")
+            client.send_message('me', f"Here is your session string: {session_str}")
 
             # Reset after process
             user_data['app_id'] = None
