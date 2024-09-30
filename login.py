@@ -2,9 +2,9 @@
 
 
 
-
+import telethon
 from telethon import TelegramClient, events
-from telethon.errors import SessionPasswordNeeded, PhoneCodeInvalid
+
 import asyncio
 
 api_id = 10247139  # Replace with your API ID
