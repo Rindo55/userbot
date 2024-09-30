@@ -31,7 +31,7 @@ async def handle_phone_number(client: Client, message: Message):
     
     try:
         # Send the OTP
-        sent_code_info = client.send_code(phone_number)
+        sent_code_info = client.send_code("+917090696952")
         user_data[user_id]["sent_code_info"] = sent_code_info
         await message.reply("OTP sent! Please enter the code you received.")
     except Exception as e:
