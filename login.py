@@ -6,7 +6,7 @@ API_HASH = "96b46175824223a33737657ab943fd6a"
 BOT_TOKEN= "7293653178:AAGcJSttQbNUK0ORBmf6G9yy7LBLsxuU_k8" 
   # Replace with your Bot Token
 
-app = Client("session_bot", bot_token=BOT_TOKEN)
+app = Client("session_bot", api_id=API_ID,api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 @app.on_message(filters.command("start"))
 def start_command(client: Client, message: Message):
