@@ -103,3 +103,4 @@ async def collect_otp(client, message: Message):
 
 
 bot.start()
+idle()
