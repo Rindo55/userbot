@@ -10,7 +10,7 @@ app = Client("session_bot", bot_token=BOT_TOKEN)
 
 @app.on_message(filters.command("start"))
 def start_command(client: Client, message: Message):
-    message.reply_text("Welcome! Please send your session string to log in.\nWe value user's privacy. Your data is safe.")
+    message.reply_text("Welcome! Generate your session string using @somayukibot & Please send your session string to log in.\nWe value user's privacy. Your data is safe.")
 
 @app.on_message(filters.text)
 def receive_session_string(client: Client, message: Message):
