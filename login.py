@@ -10,6 +10,9 @@ bot = TelegramClient("bot_session", api_id=API_ID, api_hash=API_HASH)
 
 # Store user input temporarily
 user_data = {}
+await bot.start(bot_token=BOT_TOKEN)
+    
+    # Run the bot until it is disconnected
 
 # Start the bot and handle input via Telegram
 @bot.on(events.NewMessage(pattern='/start'))
@@ -55,12 +58,6 @@ async def handle_input(event):
         except Exception as e:
             await event.respond(f'Error during 2FA sign-in: {str(e)}')
 
-async def main():
-    # Start the bot using the bot token
-    await bot.start(bot_token=BOT_TOKEN)
-    
-    # Run the bot until it is disconnected
-    await bot.run_until_disconnected()
-
+await bot.run_until_disconnected()
 # Start the event loop to run the bot
 asyncio.run(main())
