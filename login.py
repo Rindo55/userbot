@@ -3,8 +3,10 @@ from telethon.types import User
 import asyncio
 API_ID = 10247139 
 API_HASH = "96b46175824223a33737657ab943fd6a"
-bot_token ="7293653178:AAGcJSttQbNUK0ORBmf6G9yy7LBLsxuU_k8" 
-bot = TelegramClient("bot_session", api_id=API_ID, api_hash=API_HASH, bot_token=bot_token)
+BOT_TOKEN ="7293653178:AAGcJSttQbNUK0ORBmf6G9yy7LBLsxuU_k8" 
+
+# Initialize the Telegram bot client
+bot = TelegramClient("bot_session", api_id=API_ID, api_hash=API_HASH)
 
 # Store user input temporarily
 user_data = {}
@@ -17,23 +19,34 @@ async def start(event):
 
 @bot.on(events.NewMessage)
 async def handle_input(event):
+    chat_id = user_data.get('chat_id')
+    
+    if event.chat_id != chat_id:
+        return  # Ignore messages from other users
+    
     if 'phone' not in user_data:
         user_data['phone'] = event.text
-        await event.respond('Thank you! Please enter the code you received:')
-        # Trigger sending the login code
-        user_data['login_token'] = await bot.request_login_code(user_data['phone'])
+        try:
+            # Trigger sending the login code
+            user_data['login_token'] = await bot.send_code_request(user_data['phone'])
+            await event.respond('Thank you! Please enter the code you received:')
+        except Exception as e:
+            await event.respond(f'Error requesting login code: {str(e)}')
+    
     elif 'code' not in user_data:
         user_data['code'] = event.text
         try:
-            user_or_token = await bot.sign_in(user_data['login_token'], user_data['code'])
+            user_or_token = await bot.sign_in(user_data['phone'], user_data['code'])
             if isinstance(user_or_token, User):
                 await event.respond('You are successfully logged in!')
+                return
             else:
-                # user_or_token is PasswordToken, request password (2FA)
+                # If 2FA is enabled, it will return a PasswordToken
                 user_data['password_token'] = user_or_token
-                await event.respond('Please enter your 2-step verification password:')
+                await event.respond('2-step verification enabled. Please enter your password:')
         except Exception as e:
             await event.respond(f'Error during sign-in: {str(e)}')
+    
     elif 'password_token' in user_data and 'password' not in user_data:
         user_data['password'] = event.text
         try:
@@ -43,8 +56,11 @@ async def handle_input(event):
             await event.respond(f'Error during 2FA sign-in: {str(e)}')
 
 async def main():
-    async with bot:
-        await bot.run_until_disconnected()
+    # Start the bot using the bot token
+    await bot.start(bot_token=BOT_TOKEN)
+    
+    # Run the bot until it is disconnected
+    await bot.run_until_disconnected()
 
-# Start the bot
+# Start the event loop to run the bot
 asyncio.run(main())
