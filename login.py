@@ -1,4 +1,4 @@
-from telethon import Client, events
+from telethon import TelegramClient, events
 from telethon.types import User
 import asyncio
 API_ID = 10247139 
