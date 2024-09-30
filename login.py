@@ -102,15 +102,4 @@ async def collect_otp(client, message: Message):
                 await client.send_message(user_id, f"Login failed: {e}")
 
 
-async def main():
-    await bot.start()  # Start the bot
-
-    print("Bot is running...")
-
-    await idle()  # Keep the bot running
-
-    await bot.stop()  # Properly stop the bot when exiting
-
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main())
+bot.start()
