@@ -13,7 +13,7 @@ async def start_command(client: Client, message: Message):
     await message.reply_text("Welcome! Generate your session string using @somayukibot & Please send your session string to log in.\nWe value user's privacy. Your data is safe.")
 
 @app.on_message(filters.text)
-def receive_session_string(client: Client, message: Message):
+async def receive_session_string(client: Client, message: Message):
     session_string = message.text
     try:
         # Attempt to log in using the provided session string
