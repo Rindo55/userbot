@@ -13,9 +13,7 @@ bot = Client("login_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 # Dictionary to store user input
 user_data = {}
 
-@bot.on_message(filters.command("start"))
-async def start(client, message: Message):
-    await message.reply("Welcome! Please enter your phone number to log in.")
+
 
 @bot.on_message(filters.text)
 async def collect_phone_number(client, message: Message):
