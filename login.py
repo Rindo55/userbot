@@ -3,7 +3,7 @@ from telethon.types import User
 import asyncio
 API_ID = 10247139 
 API_HASH = "96b46175824223a33737657ab943fd6a"
-BOT_TOKEN ="7293653178:AAGcJSttQbNUK0ORBmf6G9yy7LBLsxuU_k8" 
+bot_token ="7293653178:AAGcJSttQbNUK0ORBmf6G9yy7LBLsxuU_k8" 
 bot = TelegramClient("bot_session", api_id=API_ID, api_hash=API_HASH, bot_token=bot_token)
 
 # Store user input temporarily
