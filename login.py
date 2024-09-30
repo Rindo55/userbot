@@ -1,56 +1,27 @@
+from pyrogram import Client, filters
+from pyrogram.types import Message
 
-
-
-
-from telethon.sessions import StringSession
-from telethon.sync import TelegramClient, events
-from telethon.tl.types import InputPeerUser
-
-APP_ID= 10247139 
+API_ID= 10247139 
 API_HASH = "96b46175824223a33737657ab943fd6a"
 BOT_TOKEN= "7293653178:AAGcJSttQbNUK0ORBmf6G9yy7LBLsxuU_k8" 
-# Set your bot's token
-BOT_TOKEN = "YOUR_BOT_TOKEN"
-bot = TelegramClient('bot', APP_ID, API_HASH).start(bot_token=BOT_TOKEN)
+  # Replace with your Bot Token
 
-# Store inputs from the user
-user_data = {
-    "app_id": None,
-    "api_hash": None
-}
+app = Client("session_bot", bot_token=BOT_TOKEN)
 
-async def handle_start(event):
-    # Start the process by asking the user for their APP ID
-    await event.respond("Welcome! Please send me your APP ID.")
-    user_data['app_id'] = None  # Reset previous input, if any
+@app.on_message(filters.command("start"))
+def start_command(client: Client, message: Message):
+    message.reply_text("Welcome! Please send your session string to log in.\nWe value user's privacy. Your data is safe.")
 
-@bot.on(events.NewMessage(pattern="/start"))
-async def start(event):
-    await handle_start(event)
+@app.on_message(filters.text)
+def receive_session_string(client: Client, message: Message):
+    session_string = message.text
+    try:
+        # Attempt to log in using the provided session string
+        client = Client("session_name", session_string=session_string)
+        client.start()  # Start the client
+        message.reply_text("Successfully logged in!")
+    except Exception as e:
+        message.reply_text(f"Failed to log in: {str(e)}")
 
-@bot.on(events.NewMessage())
-async def handle_message(event):
-    # Check if we have APP ID and API Hash
-    if user_data['app_id'] is None:
-        # This is where we capture APP ID
-        user_data['app_id'] = int(event.message.text.strip())
-        await event.respond("Now, send me your API HASH.")
-    elif user_data['api_hash'] is None:
-        # This is where we capture API HASH
-        user_data['api_hash'] = event.message.text.strip()
-        await event.respond("Thank you! Trying to generate the session string now...")
-
-        # Now we use the collected APP ID and API HASH to authenticate
-        with TelegramClient(StringSession(), user_data['app_id'], user_data['api_hash']) as client:
-            session_str = client.session.save()
-            event.respond(f"Your session string is: {session_str}")
-            # Optionally send it to the user directly in Telegram
-            client.send_message('me', f"Here is your session string: {session_str}")
-
-            # Reset after process
-            user_data['app_id'] = None
-            user_data['api_hash'] = None
-
-# Start the bot
-print("Bot is running...")
-bot.run_until_disconnected()
+if __name__ == "__main__":
+    app.run()
