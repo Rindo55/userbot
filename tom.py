@@ -12,7 +12,7 @@ BOT_TOKEN= "7293653178:AAGcJSttQbNUK0ORBmf6G9yy7LBLsxuU_k8"
 
 # Replace these with your own values
 
-BOT_TOKEN = '"5222572158:AAGwMiAMGgj9BmMQdcxn58Cq19stEnoVarI"'
+BOT_TOKEN = "5222572158:AAGwMiAMGgj9BmMQdcxn58Cq19stEnoVarI"
 CHANNEL_ID =  -1002314161300
 
 # Initialize the Telegram client
